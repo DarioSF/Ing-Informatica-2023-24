@@ -88,10 +88,36 @@ bool TCalendario::ModMensaje(char *mensaje){ //PREGUNTA 3
 /*		OPERADORES SOBRECARGADOS	*/
 
 //	Sobrecarga del operador: SUMA
-TCalendario TCalendario::operator + (int dias){
-	TCalendario res(*this);
-	if(dias > 0) arreglarFecha(res, res.Dia() + dias);
-	return res;
+TCalendario TCalendario::operator+(int dias) {
+    TCalendario resultado(*this);
+    
+    // Sumar los días al día actual
+    resultado.dia += dias;
+
+    // Mientras el día resultante sea mayor que el número total de días del mes actual
+    while (resultado.dia > resultado.numDiasMes(resultado.Mes())) {
+        // Restar el número total de días del mes actual y avanzar al siguiente mes
+        resultado.dia -= resultado.numDiasMes(resultado.Mes());
+        resultado.mes++;
+
+        // Si el mes resultante es mayor que 12, ajustar el año y el mes
+        if (resultado.mes > 12) {
+            resultado.mes = 1;
+            resultado.anyo++;
+        }
+    }
+
+    // Ajustar la fecha si el día resultante es menor o igual a cero
+    if (resultado.dia <= 0) {
+        resultado.mes--;
+        if (resultado.mes == 0) {
+            resultado.mes = 12;
+            resultado.anyo--;
+        }
+        resultado.dia = resultado.numDiasMes(resultado.Mes()) + resultado.dia;
+    }
+    
+    return resultado;
 }
 
 //PREGUNTA 5
@@ -125,29 +151,18 @@ int TCalendario::numDiasMes(int mes){
 //	Comprueba que la fecha sea correcta
 bool TCalendario::fechaCorrecta(int dia, int mes, int anyo){
 	//	Check para fechas inferiores
-	if(dia < 1 || mes < 1 || anyo < 1900){
-		return false;	
-	} 
+	if(dia < 1 || mes < 1 || anyo < 1900) return false;
 	//	Check para meses superiores
-	if(mes > 12){
-		 return false;
-	}
+	if(mes > 12) return false;
 	int numDias = numDiasMes(mes);
 	//	Check para dias validos en los meses de 31 dias
-	if(dia > numDias && numDias == 31){
-		  return false;
-	}
+	if(dia > numDias && numDias == 31) return false;
 	//	Check para dias validos en los meses de 30 dias
-	if(dia > numDias && numDias == 30){
-		return false;
-	}
+	if(dia > numDias && numDias == 30) return false;
 	//	Check para los dias validos en febrero
 	if(mes == 2){
 		//	Check para los años bisiestos
-		if(dia > numDias){
-			
-			return false;
-		}
+		if(dia > numDias) return false;
 	}
 	//	Si pasa todas las condiciones, la fecha es valida
 		return true;
@@ -155,19 +170,33 @@ bool TCalendario::fechaCorrecta(int dia, int mes, int anyo){
 
 }
 
-void TCalendario::arreglarFecha(TCalendario &res, int dias){
-    if(dias > res.numDiasMes(res.Mes())){
-        dias -= res.numDiasMes(res.Mes());
-        res.mes++;
-        if(res.Mes() > 12){
-        	res.dia = 1;
-            res.mes = 1;
-            res.anyo++;
+void TCalendario::arreglarFecha(TCalendario &res, int dias) {
+    cerr << "llamada a arreglar Fecha" << endl;
+    
+    // Sumar los días restantes al día actual
+    res.dia += dias;
+
+    // Mientras el día resultante sea mayor que el número total de días del mes actual
+    while (res.dia > res.numDiasMes(res.Mes())) {
+        cerr << "dias mayor que tamaño mes (" << res.dia << ")" << endl;
+        // Restar el número total de días del mes actual
+        int diasMesActual = res.numDiasMes(res.Mes());
+        res.dia -= diasMesActual;
+        cerr << "dias despues de restar el mes (" << res.dia << ")" << endl;
+        // Si el día resultante es mayor que el número total de días del mes actual, incrementar el mes
+        if (res.dia > diasMesActual) { // Cambio: Verificar si el día resultante sigue siendo mayor que el número total de días del mes actual
+            res.mes++;
+            // Si el mes resultante es mayor que 12, ajustar el año y el mes
+            if (res.mes > 12) {
+                cerr << "mes mayor que 12" << endl;
+                res.mes = 1;
+                res.anyo++;
+            }
+            cerr << "llamada recursiva" << endl;
         }
-        arreglarFecha(res, dias); // Llamada recursiva para seguir ajustando la fecha si es necesario
-    }else{
-    	res.ModFecha(dias, res.Mes(), res.Anyo());
     }
+    
+    cerr << "terminamos de arreglar fecha" << endl;
 }
 
 /*		PREGUNTAS		*/

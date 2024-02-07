@@ -3,9 +3,9 @@
 using namespace std;
 
 int main(){
-	TCalendario c(1,1,2000, NULL);
+	TCalendario c(31,12,2000, NULL);
 	cout << c.Dia() << "/" << c.Mes() << "/" << c.Anyo() <<  endl;
-	int op_suma = 366;
+	int op_suma = 1;
 	cout << "TEST operador + " << op_suma << endl;
 	c = c + op_suma;
 	cout << c.Dia() << "/" << c.Mes() << "/" << c.Anyo() <<  endl;
