@@ -1,0 +1,6 @@
+C:\Users\G513\source\repos\hada-p0\HadaBiblioteca\obj\Debug\HadaBiblioteca.csproj.CoreCompileInputs.cache
+C:\Users\G513\source\repos\hada-p0\HadaBiblioteca\obj\Debug\HadaBiblioteca.csproj.AssemblyReference.cache
+C:\Users\G513\source\repos\hada-p0\HadaBiblioteca\bin\Debug\HadaBiblioteca.dll
+C:\Users\G513\source\repos\hada-p0\HadaBiblioteca\bin\Debug\HadaBiblioteca.pdb
+C:\Users\G513\source\repos\hada-p0\HadaBiblioteca\obj\Debug\HadaBiblioteca.dll
+C:\Users\G513\source\repos\hada-p0\HadaBiblioteca\obj\Debug\HadaBiblioteca.pdb

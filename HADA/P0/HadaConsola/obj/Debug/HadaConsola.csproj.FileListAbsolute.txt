@@ -1,0 +1,7 @@
+C:\Users\G513\source\repos\hada-p0\HadaConsola\bin\Debug\HadaConsola.exe.config
+C:\Users\G513\source\repos\hada-p0\HadaConsola\bin\Debug\HadaConsola.exe
+C:\Users\G513\source\repos\hada-p0\HadaConsola\bin\Debug\HadaConsola.pdb
+C:\Users\G513\source\repos\hada-p0\HadaConsola\obj\Debug\HadaConsola.csproj.AssemblyReference.cache
+C:\Users\G513\source\repos\hada-p0\HadaConsola\obj\Debug\HadaConsola.csproj.CoreCompileInputs.cache
+C:\Users\G513\source\repos\hada-p0\HadaConsola\obj\Debug\HadaConsola.exe
+C:\Users\G513\source\repos\hada-p0\HadaConsola\obj\Debug\HadaConsola.pdb
