@@ -29,7 +29,7 @@ TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){
 //	Constructor copia
 TCalendario::TCalendario(TCalendario &cal){
 	this->dia = cal.dia;
-	this->mes = cal.dia;
+	this->mes = cal.mes;
 	this->anyo = cal.anyo;
 	this->mensaje = cal.mensaje;
 }
@@ -89,34 +89,22 @@ bool TCalendario::ModMensaje(char *mensaje){ //PREGUNTA 3
 
 //	Sobrecarga del operador: SUMA
 TCalendario TCalendario::operator+(int dias) {
+	// Crear objeto TCalendario para devolver
     TCalendario resultado(*this);
-    
     // Sumar los días al día actual
     resultado.dia += dias;
-
     // Mientras el día resultante sea mayor que el número total de días del mes actual
     while (resultado.dia > resultado.numDiasMes(resultado.Mes())) {
         // Restar el número total de días del mes actual y avanzar al siguiente mes
         resultado.dia -= resultado.numDiasMes(resultado.Mes());
         resultado.mes++;
-
         // Si el mes resultante es mayor que 12, ajustar el año y el mes
         if (resultado.mes > 12) {
             resultado.mes = 1;
             resultado.anyo++;
         }
     }
-
-    // Ajustar la fecha si el día resultante es menor o igual a cero
-    if (resultado.dia <= 0) {
-        resultado.mes--;
-        if (resultado.mes == 0) {
-            resultado.mes = 12;
-            resultado.anyo--;
-        }
-        resultado.dia = resultado.numDiasMes(resultado.Mes()) + resultado.dia;
-    }
-    
+    // Devolver el TCalendario con la fecha modificada
     return resultado;
 }
 
