@@ -2,60 +2,63 @@
 #define _TCALENDARIO_H_
 
 #include <iostream>
+#include <string.h>
+#include <cstring>
 
 using namespace std;
 
 class TCalendario{
 	/*							FUNCIONES AMIGAS							*/
 	/*	Sobrecarga del operador salida										*/
-	//friend ostream & operator<<(ostream &, TCalendario &);----
+	friend ostream & operator<<(ostream &, TCalendario &);
 	private:
 		int dia;
 		int mes;
 		int	anyo;
 		char* mensaje;
 	/*							METODOS AUXILIARES							*/	
-		bool fechaCorrecta(int dia, int mes, int anyo);
-		bool esBisiesto(int anyo);
-		int numDiasMes(int mes);
-		void arreglarFecha(TCalendario &res, int dias);
+		bool fechaCorrecta(int, int, int);
+		bool esBisiesto(int);
+		int numDiasMes(int, int);
+		void arreglarFecha(TCalendario &, int);
+		bool compararMensaje(char*, char*);
 	public:
 	/*							FORMA CANONICA								*/
 	/*	Constructor por defecto												*/
 		TCalendario();
 	/*	Constructor con parametros											*/
-		TCalendario(int dia, int mes, int anyo, char *mens);
+		TCalendario(int, int, int, char*);
 	/*	Constructor copia 													*/
 		TCalendario (TCalendario &);
 	/*	Destructor 															*/
 		~TCalendario();
 	/*	Sobrecarga del operador asignación									*/
-		//TCalendario & operator=(TCalendario &); ------
+		TCalendario & operator=(const TCalendario &);
 	/*							METODOS										*/
 	/*	Sobrecarga del operador: SUMA de fecha + un número de dias;			*/
-		TCalendario operator+(int dias);
+		TCalendario operator+(int);
 	/*	Sobrecarga del operador: RESTA de fecha - un número de dias;		*/
-		//TCalendario operator-(int);
+		TCalendario operator-(int);
 	/*	Modifica la fecha incrementándola en un dia (con postincremento);	*/
-		//TCalendario operator++(int);
+		TCalendario operator++(int);
 	/*	Modifica la fecha incrementándola en un dia (con preincremento);	*/
-		//TCalendario & operator++();
+		TCalendario & operator++();
 	/*	Modifica la fecha decrementándola en un dia (con postdecremento);	*/
-		//TCalendario operator--(int);
+		TCalendario operator--(int);
 	/*	Modifica la fecha decrementándola en un día (con predecremento);	*/
-		//TCalendario & operator--();
+		TCalendario & operator--();
 	/*	Modifica la fecha 													*/
-		bool ModFecha (int dia, int mes, int anyo);
+		bool ModFecha (int, int, int);
 	/*	Modifica el mensaje 												*/
 		bool ModMensaje(char *);
 	/*	Sobrecarga del operador igualdad;									*/
-		//bool operator ==(TCalendario &);
+		bool operator==(const TCalendario &);
 	/*	Sobrecarga del operador desigualdad;								*/
-		//bool operator !=(TCalendario &);
-	/*	Sobrecarga del operador >; (ver ACLARACIÓN sobre ORDENACIÓN)		*/
-		//bool operator>(TCalendario &);
-	/*	Sobrecarga del operador <; (ver ACLARACIÓN sobre ORDENACIÓN)		*/
-		//bool operator<(TCalendario &);
+		bool operator!=(const TCalendario &);
+	/*	Sobrecarga del operador >; 											*/
+		bool operator>(const TCalendario &);
+	/*	Sobrecarga del operador <; 											*/
+		bool operator<(const TCalendario &);
 	/*	TCalendario vacío													*/
 		bool EsVacio();
 	/*	Devuelve el día del calendario;										*/

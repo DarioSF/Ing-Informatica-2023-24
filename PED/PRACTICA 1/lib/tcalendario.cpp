@@ -19,19 +19,28 @@ TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){
 		this->dia = dia;
 		this->mes = mes;
 		this->anyo = anyo;
-	}else{
+		if(mens != NULL){
+			this->mensaje = new char[strlen(mens)+1];
+			strcpy(this->mensaje, mens);
+		}
+	}
+	else{
 		this->dia = 1;
 		this->mes = 1;
 		this->anyo = 1900;
+		this->mensaje = NULL;
 	}
-	//this->mensaje = NULL; //PREGUNTA 1
 }
 //	Constructor copia
 TCalendario::TCalendario(TCalendario &cal){
 	this->dia = cal.dia;
 	this->mes = cal.mes;
 	this->anyo = cal.anyo;
-	this->mensaje = cal.mensaje;
+	if(cal.mensaje != NULL){
+		this->mensaje = new char[strlen(cal.mensaje)+1];
+		strcpy(this->mensaje, cal.mensaje);
+	}
+	else mensaje = NULL;
 }
 
 //	Destructor
@@ -87,34 +96,172 @@ bool TCalendario::ModMensaje(char *mensaje){ //PREGUNTA 3
 
 /*		OPERADORES SOBRECARGADOS	*/
 
+//	Sobrecarga del operador: ASIGNACION
+TCalendario& TCalendario::operator=(const TCalendario &c){
+	// Compruebo que son distintos
+	if(this != &c){
+		// Llamo al destructor
+		(*this).~TCalendario();
+		// Asigno los valores directos
+		dia = c.dia;
+		mes = c.mes;
+		anyo = c.anyo;
+		// Si el mensaje no es NULL reservo memoria y copio el mensaje
+		if(c.mensaje != NULL){
+			mensaje = new char[strlen(c.mensaje)+1];
+			strcpy(mensaje, c.mensaje);
+		}
+		else mensaje = NULL;
+	}
+	// Devolver el objeto *this ya modificado
+	return *this;
+}
+
 //	Sobrecarga del operador: SUMA
 TCalendario TCalendario::operator+(int dias) {
 	// Crear objeto TCalendario para devolver
     TCalendario resultado(*this);
-    // Sumar los días al día actual
-    resultado.dia += dias;
-    // Mientras el día resultante sea mayor que el número total de días del mes actual
-    while (resultado.dia > resultado.numDiasMes(resultado.Mes())) {
-        // Restar el número total de días del mes actual y avanzar al siguiente mes
-        resultado.dia -= resultado.numDiasMes(resultado.Mes());
-        resultado.mes++;
-        // Si el mes resultante es mayor que 12, ajustar el año y el mes
-        if (resultado.mes > 12) {
-            resultado.mes = 1;
-            resultado.anyo++;
-        }
-    }
+    // Si los dias son negativos no se modifica la fecha
+    if(dias > 0){
+	    // Sumar los días al día actual
+	    resultado.dia += dias;
+	    // Mientras el día resultante sea mayor que el número total de días del mes actual
+	    while (resultado.dia > resultado.numDiasMes(resultado.Mes(), resultado.Anyo())) {
+	        // Restar el número total de días del mes actual y avanzar al siguiente mes
+	        resultado.dia -= resultado.numDiasMes(resultado.Mes(), resultado.Anyo());
+	        resultado.mes++;
+	        // Si el mes resultante es mayor que 12, ajustar el año y el mes
+	        if (resultado.mes > 12) {
+	            resultado.mes = 1;
+	            resultado.anyo++;
+	        }
+	    }
+	}
     // Devolver el TCalendario con la fecha modificada
     return resultado;
+}
+
+//	Sobrecarga del operador: RESTA
+TCalendario TCalendario::operator-(int dias){
+	// Crear objeto TCalendario para devolver
+	TCalendario resultado(*this);
+	// Si los dias son negativos no se modifica la fecha
+	if(dias > 0){
+		// Restar los días al día actual
+		resultado.dia -= dias;
+		while(resultado.dia < 1){
+			// Sumar el número total de dias del mes actual y retroceder al mes anterior
+			resultado.dia += resultado.numDiasMes(resultado.Mes(), resultado.Anyo());
+			resultado.mes--;
+			// Si el mes resultante es menor que 1, ajustar el año y el mes
+			if(resultado.mes < 1){
+				resultado.mes = 12;
+				resultado.anyo--;
+			}
+		}
+	}
+	// Si la fecha final no es correcta no realizamos cambios
+	if(!fechaCorrecta(resultado.Dia(), resultado.Mes(), resultado.Anyo())){
+		resultado.dia = this->dia;
+		resultado.mes = this->mes;
+		resultado.anyo = this->anyo;
+		resultado.mensaje = NULL;
+	}
+	// Devolver el TCalendario con la fecha modificada
+	return resultado;
+}
+
+//	Sobrecarga del operador: POSTINCREMENTO
+TCalendario TCalendario::operator++(int dummie){
+	// Crear objeto TCalendario para devolver por valor
+	TCalendario resultado(*this);
+	// Realizo el incremento en el objeto *this
+	*this = *this + 1;
+	// Devolver la copia sin modificar
+	return resultado;
+}
+
+//	Sobrecarga del operador: PREINCREMENTO
+TCalendario& TCalendario::operator++(){
+	// Realizo el incremento en el objeto *this
+	*this = *this + 1;
+	// Devolver la copia modificada 
+	return *this;
+}
+
+//	Sobrecarga del operador: POSTDECREMENTO
+TCalendario TCalendario::operator--(int dummie){
+	// Crear objeto TCalendario para devolver por valor
+	TCalendario resultado(*this);
+	// Realizo el decremento en el objeto *this
+	*this = *this - 1;
+	// Devolver la copia sin modificar
+	return resultado;
+}
+
+//	Sobrecarga del operador: PREDECREMENTO
+TCalendario & TCalendario::operator--(){
+	// Realizo el decremento en el objeto *this
+	*this = *this - 1;
+	// Devolver la copia modificada
+	return *this;
+}
+
+//	Sobrecarga del operador: MAYOR QUE
+bool TCalendario::operator>(const TCalendario &c){
+	// Compara la fecha y devuelve true o false segun resulte la comparacion
+	if(this->anyo != c.anyo) return this->anyo > c.anyo;
+	if(this->mes != c.mes) return this->mes > c.mes;
+	if(this->dia != c.dia) return this->dia > c.dia;
+	// Si llegamos hasta aquí, comparamos los mensajes
+	return compararMensaje(this->mensaje, c.mensaje);
+}
+
+//	Sobrecarga del operador: MENONR QUE
+bool TCalendario::operator<(const TCalendario &c){
+	return !(*this > c) && *this != c;
+}
+
+//	Sobrecarga del operador: IGUAL QUE
+bool TCalendario::operator==(const TCalendario &c){
+	if(this->anyo != c.anyo || this->mes != c.mes || this->dia != c.dia || compararMensaje(this->mensaje, c.mensaje)) return false;
+	return true;
+}
+
+//	Sobrecarga del operador: DISTINTO QUE
+bool TCalendario::operator!=(const TCalendario &c){
+	return !(*this == c);
 }
 
 //PREGUNTA 5
 
 /*		FUNCIONES AMIGAS			*/
 
-//PREGUNTA 6
+//	Sobrecargad el operador: SALIDA
+ostream &operator<<(ostream &os, TCalendario &c){
+	if(c.dia < 10) os << "0" << c.dia << "/";
+	else os << c.dia << "/";
+	if(c.mes < 10) os << "0" << c.mes << "/";
+	else os << c.mes << "/"; 
+	os << c.anyo << " ";
+	if(c.mensaje == NULL) os << "\"\"";
+	else os << "\"" << c.mensaje << "\"";
+	return os;
+}
 
 /*		FUNCIONES AUXILIARES		*/
+
+// Compara dos mensajes
+bool TCalendario::compararMensaje(char* m1, char* m2){
+	// Si los dos son igual a NULL devolvemos false
+	if(m1 == NULL && m2 == NULL) return false;
+	// Si el mensaje 1 es NULL, el mensaje 2 es más largo por lo que devolvemos false
+	if(m1 == NULL) return false;
+	// Si el mensaje 2 es NULL, el mensaje 1 es más largo por lo que devolvemos true
+	if(m2 == NULL) return true;
+	// Si llegamos hasta aquí devolvemos la comparación de los mensajes
+	return strcmp(m1, m2) > 0;
+}
 
 //	Comprueba que el año sea bisiesto
 bool TCalendario::esBisiesto(int anyo){
@@ -122,7 +269,7 @@ bool TCalendario::esBisiesto(int anyo){
 }
 
 //	Devuelve el numero de dias que tiene un mes
-int TCalendario::numDiasMes(int mes){
+int TCalendario::numDiasMes(int mes, int anyo){
 	//	Check para dias en los meses de 31 dias
 	if((mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12)) return 31;
 	//	Check para dias en los meses de 30 dias
@@ -142,7 +289,7 @@ bool TCalendario::fechaCorrecta(int dia, int mes, int anyo){
 	if(dia < 1 || mes < 1 || anyo < 1900) return false;
 	//	Check para meses superiores
 	if(mes > 12) return false;
-	int numDias = numDiasMes(mes);
+	int numDias = numDiasMes(mes, anyo);
 	//	Check para dias validos en los meses de 31 dias
 	if(dia > numDias && numDias == 31) return false;
 	//	Check para dias validos en los meses de 30 dias
@@ -158,7 +305,7 @@ bool TCalendario::fechaCorrecta(int dia, int mes, int anyo){
 
 }
 
-void TCalendario::arreglarFecha(TCalendario &res, int dias) {
+/*void TCalendario::arreglarFecha(TCalendario &res, int dias) {
     cerr << "llamada a arreglar Fecha" << endl;
     
     // Sumar los días restantes al día actual
@@ -185,7 +332,7 @@ void TCalendario::arreglarFecha(TCalendario &res, int dias) {
     }
     
     cerr << "terminamos de arreglar fecha" << endl;
-}
+}*/
 
 /*		PREGUNTAS		*/
 /*	
@@ -193,7 +340,6 @@ void TCalendario::arreglarFecha(TCalendario &res, int dias) {
  * 	2) hace falta comprobar que sea NULL? No deberia devolver NULL si el mensaje es NULL?
  * 	3) Como compruebo los casos que debe dar false?
  * 	4) Es necesario quitar el warning?
- * 	5) Como se sobrecargan los operadores?
  *  6) Como es la sintaxis de las funciones amigas?
  * 
  */
