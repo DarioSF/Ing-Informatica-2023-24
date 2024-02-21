@@ -1,13 +1,25 @@
-#include "tcalendario.h"
+#include <iostream>
 
 using namespace std;
 
-int main(){
-	TCalendario c(31,12,2000, NULL);
-	cout << c.Dia() << "/" << c.Mes() << "/" << c.Anyo() <<  endl;
-	int op_suma = 1;
-	cout << "TEST operador + " << op_suma << endl;
-	c = c + op_suma;
-	cout << c.Dia() << "/" << c.Mes() << "/" << c.Anyo() <<  endl;
-	return 0;
+#include "tcalendario.h"
+
+
+int
+main()
+{
+   char fi[] = "Fecha incorrecta";
+   char fc[] = "Fecha correcta";
+      
+   TCalendario cal1(12,12,2006, fc);
+   TCalendario cal2(05,01,1900, fc);
+   TCalendario cal4;
+ 
+   cout<<cal1<<endl;
+   cout<<cal2<<endl;
+   cout<<cal1+79<<endl;
+   cal4=cal2-10;
+   cout<<cal2-10<<endl;
+   cout<<cal2<<endl;
+   cout<<cal4<<endl;
 }

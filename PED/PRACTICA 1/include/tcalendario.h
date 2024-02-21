@@ -10,7 +10,7 @@ using namespace std;
 class TCalendario{
 	/*							FUNCIONES AMIGAS							*/
 	/*	Sobrecarga del operador salida										*/
-	friend ostream & operator<<(ostream &, TCalendario &);
+	friend ostream & operator<<(ostream &, const TCalendario &);
 	private:
 		int dia;
 		int mes;

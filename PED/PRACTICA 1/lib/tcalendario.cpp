@@ -72,7 +72,7 @@ int TCalendario::Anyo(){
 }
 //	Devuelve el mensaje
 char* TCalendario::Mensaje(){
-	return mensaje; //PREGUNTA 2
+	return mensaje;
 }
 
 //	Modifica la fecha
@@ -162,9 +162,9 @@ TCalendario TCalendario::operator-(int dias){
 	}
 	// Si la fecha final no es correcta no realizamos cambios
 	if(!fechaCorrecta(resultado.Dia(), resultado.Mes(), resultado.Anyo())){
-		resultado.dia = this->dia;
-		resultado.mes = this->mes;
-		resultado.anyo = this->anyo;
+		resultado.dia = 1;
+		resultado.mes = 1;
+		resultado.anyo = 1900;
 		resultado.mensaje = NULL;
 	}
 	// Devolver el TCalendario con la fecha modificada
@@ -238,7 +238,7 @@ bool TCalendario::operator!=(const TCalendario &c){
 /*		FUNCIONES AMIGAS			*/
 
 //	Sobrecargad el operador: SALIDA
-ostream &operator<<(ostream &os, TCalendario &c){
+ostream &operator<<(ostream &os, const TCalendario &c){
 	if(c.dia < 10) os << "0" << c.dia << "/";
 	else os << c.dia << "/";
 	if(c.mes < 10) os << "0" << c.mes << "/";
@@ -304,42 +304,3 @@ bool TCalendario::fechaCorrecta(int dia, int mes, int anyo){
 
 
 }
-
-/*void TCalendario::arreglarFecha(TCalendario &res, int dias) {
-    cerr << "llamada a arreglar Fecha" << endl;
-    
-    // Sumar los días restantes al día actual
-    res.dia += dias;
-
-    // Mientras el día resultante sea mayor que el número total de días del mes actual
-    while (res.dia > res.numDiasMes(res.Mes())) {
-        cerr << "dias mayor que tamaño mes (" << res.dia << ")" << endl;
-        // Restar el número total de días del mes actual
-        int diasMesActual = res.numDiasMes(res.Mes());
-        res.dia -= diasMesActual;
-        cerr << "dias despues de restar el mes (" << res.dia << ")" << endl;
-        // Si el día resultante es mayor que el número total de días del mes actual, incrementar el mes
-        if (res.dia > diasMesActual) { // Cambio: Verificar si el día resultante sigue siendo mayor que el número total de días del mes actual
-            res.mes++;
-            // Si el mes resultante es mayor que 12, ajustar el año y el mes
-            if (res.mes > 12) {
-                cerr << "mes mayor que 12" << endl;
-                res.mes = 1;
-                res.anyo++;
-            }
-            cerr << "llamada recursiva" << endl;
-        }
-    }
-    
-    cerr << "terminamos de arreglar fecha" << endl;
-}*/
-
-/*		PREGUNTAS		*/
-/*	
- *	1) Lo dejo this->mensaje = NULL? 
- * 	2) hace falta comprobar que sea NULL? No deberia devolver NULL si el mensaje es NULL?
- * 	3) Como compruebo los casos que debe dar false?
- * 	4) Es necesario quitar el warning?
- *  6) Como es la sintaxis de las funciones amigas?
- * 
- */
