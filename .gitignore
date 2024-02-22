@@ -1,0 +1,7 @@
+#GIT IGNORE
+
+#	IGNORA LOS .o
+*.o
+
+#	IGNORA EJECUTABLE
+tad.*
