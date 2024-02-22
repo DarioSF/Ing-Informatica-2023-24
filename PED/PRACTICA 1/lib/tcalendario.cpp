@@ -48,6 +48,9 @@ TCalendario::~TCalendario(){
 	this->dia = 1;
 	this->mes = 1;
 	this->anyo = 1900;
+	if(this->mensaje != NULL){
+		delete[] this->mensaje;
+	}
 	this->mensaje = NULL;
 }
 
@@ -89,7 +92,7 @@ bool TCalendario::ModFecha(int dia, int mes, int anyo){
 }
 
 // Modifica el mensaje
-bool TCalendario::ModMensaje(char *mensaje){ //PREGUNTA 3
+bool TCalendario::ModMensaje(char *mensaje){ //PREGUNTA 3 // Reservar memoria para mensaje
 	this->mensaje = mensaje;
 	return true;
 }
