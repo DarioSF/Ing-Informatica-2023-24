@@ -302,7 +302,7 @@ bool TCalendario::fechaCorrecta(int dia, int mes, int anyo){
 		//	Check para los años bisiestos
 		if(dia > numDias) return false;
 	}
-	//	Si pasa todas las condiciones, la fecha es valida
+		//	Si pasa todas las condiciones, la fecha es valida
 		return true;
 
 

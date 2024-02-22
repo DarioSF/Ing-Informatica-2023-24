@@ -8,6 +8,7 @@ using namespace std;
 int
 main()
 {
+   
    char fi[] = "Fecha incorrecta";
    char fc[] = "Fecha correcta";
       
