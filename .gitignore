@@ -5,3 +5,9 @@
 
 #	IGNORA EJECUTABLE
 tad.*
+
+# IGNORA .bak
+*.bak
+
+# IGNORA LA CARPETA COMPILED DE LPP
+compiled/
