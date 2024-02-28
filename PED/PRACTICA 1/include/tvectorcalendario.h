@@ -15,16 +15,16 @@ class TVectorCalendario{
 	public:
 		TVectorCalendario();
 		TVectorCalendario(int);
-		/*TVectorCalendario(TVectorCalendario &);*/
+		TVectorCalendario(TVectorCalendario &);
 		~TVectorCalendario();
 		TVectorCalendario & operator=(TVectorCalendario &);
-		/*bool operator==(TVectorCalendario &);
-		/*bool operator!=(TVectorCalendario &);
-		/*TCalendario & operator[](int);
-		/*TCalendario operator[](int) const;
-		/*int Tamano();
-		/*int Ocupadas();
-		/*bool ExisteCal(TCalendario &);
+		bool operator==(const TVectorCalendario &);
+		bool operator!=(const TVectorCalendario &);
+		//TCalendario & operator[](int);
+		//TCalendario operator[](int) const;
+		int Tamano();
+		int Ocupadas();
+		bool ExisteCal(const TCalendario &);
 		/*void MostrarMensajes(int, int, int);
 		/*bool Redimensionar(int);*/
 };

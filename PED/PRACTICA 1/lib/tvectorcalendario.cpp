@@ -21,6 +21,13 @@ TVectorCalendario::TVectorCalendario(int tamano){
 	}
 	
 }
+
+//	Constructor de copia
+TVectorCalendario::TVectorCalendario(TVectorCalendario &vc){
+	this->tamano = vc.tamano;
+	this->c = new TCalendario[this->tamano];
+}
+
 //	Destructor
 TVectorCalendario::~TVectorCalendario(){
 	if(this->c != NULL) delete[] this->c;
@@ -38,4 +45,37 @@ TVectorCalendario& TVectorCalendario::operator=(TVectorCalendario &vc){
 			this->c[i] = vc.c[i];
 	}
 	return *this;
+}
+
+//	Sobrecarga del operador: IGUAL QUE
+bool TVectorCalendario::operator==(const TVectorCalendario &vc){
+	//if(vc == NULL) return false;
+	if(this->tamano != vc.tamano) return false;
+	for(int i = 0; i < this->tamano; i++)
+		if(this->c[i] != vc.c[i]) return false;
+	return true;
+}
+
+bool TVectorCalendario::operator!=(const TVectorCalendario &vc){
+	return !(*this == vc);
+}
+
+int TVectorCalendario::Tamano(){
+	return this->tamano;
+}
+
+bool TVectorCalendario::ExisteCal(const TCalendario &cal){
+	//if(cal != NULL) return false;
+	for(int i = 0; i < this->tamano; i++){
+		if(this->c[i] == cal) return true;
+	}
+	return false;
+}
+
+int TVectorCalendario::Ocupadas(){
+	int res = 0;
+	for(int i = 0; i < this->tamano; i++){
+		if(this->c[i] == error) res++;
+	}
+	return res;
 }
