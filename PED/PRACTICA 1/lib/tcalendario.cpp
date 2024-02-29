@@ -236,8 +236,6 @@ bool TCalendario::operator!=(const TCalendario &c){
 	return !(*this == c);
 }
 
-//PREGUNTA 5
-
 /*		FUNCIONES AMIGAS			*/
 
 //	Sobrecargad el operador: SALIDA

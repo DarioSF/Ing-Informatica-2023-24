@@ -12,6 +12,7 @@ class TVectorCalendario{
 		TCalendario *c;
 		int tamano;
 		TCalendario error;
+		bool compararFechas(TCalendario, int, int, int);
 	public:
 		TVectorCalendario();
 		TVectorCalendario(int);
@@ -25,8 +26,8 @@ class TVectorCalendario{
 		int Tamano();
 		int Ocupadas();
 		bool ExisteCal(const TCalendario &);
-		/*void MostrarMensajes(int, int, int);
-		/*bool Redimensionar(int);*/
+		void MostrarMensajes(int, int, int);
+		bool Redimensionar(int);
 };
 
 #endif
