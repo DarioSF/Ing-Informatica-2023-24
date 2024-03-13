@@ -85,7 +85,7 @@ void TVectorCalendario::MostrarMensajes(int d, int m, int a){
 	cout << "[";
  	for(int i = 1; i <= this->tamano; i++){
  		if(compararFechas(this->c[i], d, m, a)){
- 			cout << this->c[i] << ", ";
+ 			cout << this->c[i] << ", "; // doble pasada
  		}
  	}
  	cout << "]";
@@ -116,4 +116,19 @@ bool TVectorCalendario::Redimensionar(int tam){
 	delete[] this->c;
 	this->c = copiar;
 	return true;
+}
+
+TCalendario & TVectorCalendario::operator[](int i){
+	TCalendario t;
+	return t;
+}
+
+
+
+ostream &operator<<(ostream &os, TVectorCalendario &v){
+	os << "[";
+	for(int i = 0; i < v.Tamano(); i++){
+		os << "(" << i << ")" << v[i] << " ,";
+	}
+	return os;
 }

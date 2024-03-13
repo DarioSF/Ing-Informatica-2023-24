@@ -21,7 +21,7 @@ class TVectorCalendario{
 		TVectorCalendario & operator=(TVectorCalendario &);
 		bool operator==(const TVectorCalendario &);
 		bool operator!=(const TVectorCalendario &);
-		//TCalendario & operator[](int);
+		TCalendario & operator[](int);
 		//TCalendario operator[](int) const;
 		int Tamano();
 		int Ocupadas();
