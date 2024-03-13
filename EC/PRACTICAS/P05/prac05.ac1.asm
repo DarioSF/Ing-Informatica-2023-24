@@ -18,7 +18,7 @@ j exit #Acaba parte if-then
 
 else:	move $a0, $v0 # En $a0 el valor A
 
-exit: 	li $v0, 1 #Imprimir lo que hay en $a0
+exit: 	li $v0, 1  #Imprimir lo que hay en $a0
 	syscall
 	li $v0, 10 #Acaba el programa
 	syscall
