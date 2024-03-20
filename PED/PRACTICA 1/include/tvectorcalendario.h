@@ -22,7 +22,7 @@ class TVectorCalendario{
 		bool operator==(const TVectorCalendario &);
 		bool operator!=(const TVectorCalendario &);
 		TCalendario & operator[](int);
-		//TCalendario operator[](int) const;
+		TCalendario operator[](int) const;
 		int Tamano();
 		int Ocupadas();
 		bool ExisteCal(const TCalendario &);

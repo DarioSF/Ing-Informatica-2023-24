@@ -102,33 +102,46 @@ bool TVectorCalendario::Redimensionar(int tam){
 	if(tam <= 0 || tam == this->tamano) return false;
 	TCalendario *copiar = new TCalendario[tam];
 	if(tam > this->tamano){
-		TCalendario cal;
-		int seguir = 0;
-		for(int i = 1; i <= this->tamano; i++){
+		for(int i = 0; i < this->tamano; i++){
 			copiar[i] = this->c[i];
-			seguir++;
 		}
-		for(int i = seguir; i < tam; i++) copiar[i] = cal;
+		for(int i = this->tamano; i < tam; i++){
+			TCalendario cal;
+			copiar[i] = cal;
+		}
 	}
 	else{
-		for(int i = 1; i <= tam; i++) copiar[i] = this->c[i];
+		for(int i = 0; i < tam; i++){
+			copiar[i] = this->c[i];
+		}
 	}
 	delete[] this->c;
 	this->c = copiar;
+	this->tamano = tam;
 	return true;
 }
 
 TCalendario & TVectorCalendario::operator[](int i){
-	TCalendario t;
-	return t;
+	if(i < 1) return error;
+	return this->c[i - 1];
 }
 
-
+TCalendario TVectorCalendario::operator[](int i) const{
+	if(i < 1){
+		TCalendario err;
+		return err;
+	}
+	return this->c[i - 1];
+}
 
 ostream &operator<<(ostream &os, TVectorCalendario &v){
+	int veces = -1;
+	for(int i = 0; i <= v.Tamano(); i++) veces++;
 	os << "[";
-	for(int i = 0; i < v.Tamano(); i++){
-		os << "(" << i << ")" << v[i] << " ,";
+	for(int i = 1; i <= v.Tamano(); i++){
+		os << "(" << i << ") " << v[i];
+		if(i < veces) os << ", ";
 	}
+	os << "]";
 	return os;
 }
