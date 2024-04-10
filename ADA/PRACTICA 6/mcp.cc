@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-//#include <limits>
+#include <limits>
 #include <fstream>
 using namespace std;
 
@@ -41,9 +41,12 @@ bool readFile(string fileName, Matrix &mat);
 void printMatrix(const Matrix &mat);
 long minimum(long x , long y,  long z);
 long mcp_naive(const Matrix &mat, int i, int j);
-long mcp_memo(const Matrix &mat, int i, int j, vector<vector<int>> &almacen);
-Path createPath(const Matrix &matrix);
-void printPath(const Path &p);
+long mcp_memo(const Matrix &mat, int i, int j, vector<vector<long>> &almacen);
+void printPath(const vector<vector<char>> &path);
+void printAlmacen(const vector<vector<long>> &almacen);
+long mcp_it_matrix(const Matrix &matrix);
+long mcp_it_vector(const Matrix &matrix);
+void mcp_parser(const vector<vector<long>> &mat, const Matrix &matrix);
 
 // MAIN
 int main(int argc, char *argv[]){
@@ -51,7 +54,9 @@ int main(int argc, char *argv[]){
 	Matrix mat;
 	long naive; 
 	long memo;
-	vector<vector<int>> almacen;
+	long itMat;
+	long itVec;
+	vector<vector<long>> almacen;
 	if(processArguments(argc, argv, args)){
 		if(readFile(args.fileName, mat)){
 			if(!args.naive){	
@@ -59,12 +64,17 @@ int main(int argc, char *argv[]){
 				cout << naive;
 			}
 			else cout << "-";
-			almacen = vector<vector<int>>(mat.rows, vector<int>(mat.columns, -1));
+			almacen = vector<vector<long>>(mat.rows, vector<long>(mat.columns, -1));
 			memo = mcp_memo(mat, mat.rows - 1, mat.columns - 1, almacen);
-			// funciones que faltan
-			cout << " " << memo << " ? ?" << endl;
-			if(args.p2d) cout << "?" << endl;
-			if(args.t) cout << "?" << endl;
+			itMat = mcp_it_matrix(mat);
+			itVec = mcp_it_vector(mat);
+			cout << " " << memo;
+			cout << " " << itMat;
+			cout << " " << itVec;
+			cout << endl;
+			if(args.p2d) mcp_parser(almacen, mat);
+			almacen[0][0] = mat.weights[0][0];
+			if(args.t) printAlmacen(almacen);
  		}
 	}
 	return 0;
@@ -94,6 +104,22 @@ void printError(int error, string reason){
 // Imprimir la manera de lanzar el programa por consola
 void printUsage(){
 	cerr << "Usage:" << endl << "mcp [--p2D] [-t] [--ignore-naive] -f file" << endl;
+}
+
+void printPath(const vector<vector<char>> &path){
+	for(vector<char> row : path){
+        for(char c : row)
+            cout << c;
+        cout << endl;
+    }
+}
+
+void printAlmacen(const vector<vector<long>> &almacen){
+	for(vector<long> row : almacen){
+		for(long n : row)
+			cout << abs(n) << " ";
+		cout << endl;
+	}
 }
 
 // Procesar los argumentos y lanzar los errores
@@ -158,26 +184,6 @@ bool readFile(string fileName, Matrix &mat){
     return true;
 }
 
-Path createPath(const Matrix &matrix){
-	Path res;
-	res.rows = matrix.rows;
-	res.columns = matrix.columns;
-	res.path = vector<vector<char>>(res.rows, vector<char>(res.columns, -1));
-    for (int i = 0; i < res.rows; ++i){
-        for (int j = 0; j < res.columns; ++j){
-            res.path[i][j] = '.';
-        }
-    }
-    return res;
-}
-
-void printPath(const Path &p){
-	for(vector<char> row : p.path){
-		for(char c : row) cout << c;
-		cout << endl;
-	}
-}
-
 // Imprimir la matriz
 void printMatrix(const Matrix &matrix){
 	cout << matrix.rows << " " << matrix.columns << endl;
@@ -202,7 +208,7 @@ long mcp_naive(const Matrix &mat, int i, int j) {
     return result;
 }
 // MCP_MEMO
-long mcp_memo(const Matrix &mat, int i, int j, vector<vector<int>> &almacen){
+long mcp_memo(const Matrix &mat, int i, int j, vector<vector<long>> &almacen){
 	long result;
 	if(i == 0 && j == 0){
 		return mat.weights[0][0];
@@ -218,4 +224,71 @@ long mcp_memo(const Matrix &mat, int i, int j, vector<vector<int>> &almacen){
 	}
 	else result = almacen[i][j];
 	return result;	
+}
+
+long mcp_it_matrix(const Matrix &matrix){
+    vector<vector<long>> mat(matrix.rows, vector<long>(matrix.columns, 0));
+    mat[0][0] = matrix.weights[0][0];
+    for (int j = 1; j < matrix.columns; j++)
+        mat[0][j] = matrix.weights[0][j] + mat[0][j - 1];
+    for (int i = 1; i < matrix.rows; i++)
+        mat[i][0] = matrix.weights[i][0] + mat[i - 1][0];
+    for (int i = 1; i < matrix.rows; i++){
+        for (int j = 1; j < matrix.columns; j++)
+            mat[i][j] = matrix.weights[i][j] + min(mat[i - 1][j], min(mat[i][j - 1], mat[i - 1][j - 1]));
+    }
+    return mat[matrix.rows - 1][matrix.columns - 1];
+}
+
+long mcp_it_vector(const Matrix &matrix){
+    vector<long> vec1(matrix.columns);
+    vector<long> vec2(matrix.columns);
+    for(int j = 0; j < vec1.size(); j++){
+        if(j == 0) vec1[0] = matrix.weights[0][0];
+        else vec1[j] = matrix.weights[0][j] + vec1[j - 1];
+    }
+    
+    for(int i = 1; i < matrix.rows; i++){
+        for(int j = 0; j < matrix.columns; j++){
+            if(j == 0) vec2[j] = vec1[j] + matrix.weights[i][j];
+            else vec2[j] = matrix.weights[i][j] + min(vec1[j], min(vec1[j-1], vec2[j-1]));
+        }
+        swap(vec1, vec2);
+    }
+    return vec1.back();
+}
+
+void mcp_parser(const vector<vector<long>> &mat, const Matrix &matrix){
+	vector<vector<char>> path(matrix.rows, vector<char>(matrix.columns, '.'));
+    int i = matrix.rows - 1;
+    int j = matrix.columns - 1;;
+    long vec1; 
+    long vec2;
+    long vec3;
+    long res = 0;  
+    while(i != 0 || j != 0){
+        res += matrix.weights[i][j];
+        path[i][j] = 'x';
+        if(j == 0) i--;
+        else{
+            if (i == 0) j--;
+            else{
+                vec1 = mat[i - 1][j];
+                vec2 = mat[i - 1][j - 1];
+                vec3 = mat[i][j - 1];
+                if(vec1 <= vec2 && vec1 <= vec3) i--;
+                else{
+                    if(vec2 <= vec1 && vec2 <= vec3){
+                    	i--;
+                    	j--;
+                    }
+                    else j--;
+                }
+            }
+        }
+    }
+    res += matrix.weights[0][0];
+    path[0][0] = 'x';
+    printPath(path);
+    cout << res << endl;
 }
