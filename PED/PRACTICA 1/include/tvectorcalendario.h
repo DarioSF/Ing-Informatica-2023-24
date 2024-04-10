@@ -1,32 +1,52 @@
 #ifndef _TVECTORCALENDARIO_H_
 #define _TVECTORCALENDARIO_H_
 
-#include <iostream>
+#include "tcalendario.h"
 
 using namespace std;
 
+	/*							CLASE TVECTORCALENDARIO						*/
 class TVectorCalendario{
-
+	/*							FUNCIONES AMIGAS							*/
 	friend ostream & operator<<(ostream &, TVectorCalendario &);
+	/*							PARTE PRIVADA								*/
 	private:
 		TCalendario *c;
 		int tamano;
 		TCalendario error;
+	/*							METODOS AUXILIARES							*/
 		bool compararFechas(TCalendario, int, int, int);
 	public:
+	/*							FORMA CANONICA								*/
+	/*	Constructor por defecto												*/
 		TVectorCalendario();
+	/*	Constructor sobrecargado											*/
 		TVectorCalendario(int);
+	/*	Constructor copia 													*/
 		TVectorCalendario(TVectorCalendario &);
+	/*	Destructor															*/
 		~TVectorCalendario();
+	/*	Sobrecarga del operador asignacion									*/
 		TVectorCalendario & operator=(TVectorCalendario &);
+	/*							METODOS										*/
+	/*	Sobrecarga del operador igualdad									*/
 		bool operator==(const TVectorCalendario &);
+	/*	Sobrecarga del operador desigualdad									*/
 		bool operator!=(const TVectorCalendario &);
+	/*	Sobrecarga del operador [] escritura								*/
 		TCalendario & operator[](int);
+	/*	Sobrecarga del operador [] lectura									*/
 		TCalendario operator[](int) const;
+	/*	Tamaño del vector (posiciones TOTALES)  							*/
 		int Tamano();
+	/*	Cantidad de posiciones OCUPADAS (no vacías) en el vector 			*/
 		int Ocupadas();
+	/*	Devuelve TRUE si existe el calendario en el vector 					*/
 		bool ExisteCal(const TCalendario &);
+	/*	Mostrar por pantalla mensajes de TCalendario en el vector, 
+		de fecha IGUAL O POSTERIOR a la pasada								*/
 		void MostrarMensajes(int, int, int);
+	/*	REDIMENSIONAR el vectorde TCalendario 								*/
 		bool Redimensionar(int);
 };
 

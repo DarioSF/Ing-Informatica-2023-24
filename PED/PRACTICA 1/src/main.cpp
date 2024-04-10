@@ -3,13 +3,20 @@
 using namespace std;
 
 #include "tcalendario.h"
-#include "tvectorcalendario.h"
+#include "tlistacalendario.h"
 
+int
+main(void)
+{
+   TListaCalendario l1;
+   TCalendario c1(14, 12, 1966, (char*) "Fecha Correcta");
+   TCalendario c2(1, 1, 1954, (char*) "Fecha Correcta");
+   
+   cout << l1 << endl;
+   l1.Insertar(c1);
+   cout << l1 << endl;
+   l1.Insertar(c2);
+   cout << l1 << endl;
 
-int main(){
-   TVectorCalendario a, b(-3), c(4);
-   cout << a << endl;
-   cout << b << endl;
-   cout << c << endl;
    return 0;
 }

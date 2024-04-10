@@ -7,10 +7,12 @@
 
 using namespace std;
 
+	/*							CLASE TCALENDARIO 							*/
 class TCalendario{
 	/*							FUNCIONES AMIGAS							*/
 	/*	Sobrecarga del operador salida										*/
 	friend ostream & operator<<(ostream &, const TCalendario &);
+	/*							PARTE PRIVADA 								*/
 	private:
 		int dia;
 		int mes;
@@ -26,7 +28,7 @@ class TCalendario{
 	/*							FORMA CANONICA								*/
 	/*	Constructor por defecto												*/
 		TCalendario();
-	/*	Constructor con parametros											*/
+	/*	Constructor sobrecargado											*/
 		TCalendario(int, int, int, char*);
 	/*	Constructor copia 													*/
 		TCalendario (TCalendario &);
@@ -35,41 +37,40 @@ class TCalendario{
 	/*	Sobrecarga del operador asignación									*/
 		TCalendario & operator=(const TCalendario &);
 	/*							METODOS										*/
-	/*	Sobrecarga del operador: SUMA de fecha + un número de dias;			*/
+	/*	Sobrecarga del operador: SUMA de fecha + un número de dias			*/
 		TCalendario operator+(int);
-	/*	Sobrecarga del operador: RESTA de fecha - un número de dias;		*/
+	/*	Sobrecarga del operador: RESTA de fecha - un número de dias 		*/
 		TCalendario operator-(int);
-	/*	Modifica la fecha incrementándola en un dia (con postincremento);	*/
+	/*	Modifica la fecha incrementándola en un dia (con postincremento)	*/
 		TCalendario operator++(int);
-	/*	Modifica la fecha incrementándola en un dia (con preincremento);	*/
+	/*	Modifica la fecha incrementándola en un dia (con preincremento) 	*/
 		TCalendario & operator++();
-	/*	Modifica la fecha decrementándola en un dia (con postdecremento);	*/
+	/*	Modifica la fecha decrementándola en un dia (con postdecremento)	*/
 		TCalendario operator--(int);
-	/*	Modifica la fecha decrementándola en un día (con predecremento);	*/
+	/*	Modifica la fecha decrementándola en un día (con predecremento) 	*/
 		TCalendario & operator--();
 	/*	Modifica la fecha 													*/
 		bool ModFecha (int, int, int);
 	/*	Modifica el mensaje 												*/
 		bool ModMensaje(char *);
-	/*	Sobrecarga del operador igualdad;									*/
+	/*	Sobrecarga del operador igualdad									*/
 		bool operator==(const TCalendario &);
-	/*	Sobrecarga del operador desigualdad;								*/
+	/*	Sobrecarga del operador desigualdad 								*/
 		bool operator!=(const TCalendario &);
-	/*	Sobrecarga del operador >; 											*/
+	/*	Sobrecarga del operador > 											*/
 		bool operator>(const TCalendario &);
-	/*	Sobrecarga del operador <; 											*/
+	/*	Sobrecarga del operador < 											*/
 		bool operator<(const TCalendario &);
 	/*	TCalendario vacío													*/
 		bool EsVacio();
-	/*	Devuelve el día del calendario;										*/
+	/*	Devuelve el día del calendario										*/
 		int Dia();
-	/*	Devuelve el mes del calendario;										*/
+	/*	Devuelve el mes del calendario										*/
 		int Mes();
-	/*	Devuelve el año del calendario;										*/
+	/*	Devuelve el año del calendario										*/
 		int Anyo();
 	/*	Devuelve el mensaje del calendario 									*/
 		char *Mensaje();	
 };
 
 #endif
-// comprimir: tar cvzf nombre.tgz *
