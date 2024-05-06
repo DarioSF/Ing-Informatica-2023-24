@@ -1,3 +1,4 @@
+//74392984J Dario Simon Franco
 #ifndef _TVECTORCALENDARIO_H_
 #define _TVECTORCALENDARIO_H_
 
@@ -8,7 +9,7 @@ using namespace std;
 	/*							CLASE TVECTORCALENDARIO						*/
 class TVectorCalendario{
 	/*							FUNCIONES AMIGAS							*/
-	friend ostream & operator<<(ostream &, TVectorCalendario &);
+	friend ostream & operator<<(ostream &, const TVectorCalendario &);
 	/*							PARTE PRIVADA								*/
 	private:
 		TCalendario *c;
@@ -23,11 +24,11 @@ class TVectorCalendario{
 	/*	Constructor sobrecargado											*/
 		TVectorCalendario(int);
 	/*	Constructor copia 													*/
-		TVectorCalendario(TVectorCalendario &);
+		TVectorCalendario(const TVectorCalendario &);
 	/*	Destructor															*/
 		~TVectorCalendario();
 	/*	Sobrecarga del operador asignacion									*/
-		TVectorCalendario & operator=(TVectorCalendario &);
+		TVectorCalendario & operator=(const TVectorCalendario &);
 	/*							METODOS										*/
 	/*	Sobrecarga del operador igualdad									*/
 		bool operator==(const TVectorCalendario &);
@@ -38,7 +39,7 @@ class TVectorCalendario{
 	/*	Sobrecarga del operador [] lectura									*/
 		TCalendario operator[](int) const;
 	/*	Tamaño del vector (posiciones TOTALES)  							*/
-		int Tamano();
+		int Tamano() const;
 	/*	Cantidad de posiciones OCUPADAS (no vacías) en el vector 			*/
 		int Ocupadas();
 	/*	Devuelve TRUE si existe el calendario en el vector 					*/

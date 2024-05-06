@@ -1,3 +1,4 @@
+//74392984J Dario Simon Franco
 #ifndef _TCALENDARIO_H_
 #define _TCALENDARIO_H_
 
@@ -29,7 +30,7 @@ class TCalendario{
 	/*	Constructor por defecto												*/
 		TCalendario();
 	/*	Constructor sobrecargado											*/
-		TCalendario(int, int, int, char*);
+		TCalendario(int, int, int,const char*);
 	/*	Constructor copia 													*/
 		TCalendario (TCalendario &);
 	/*	Destructor 															*/

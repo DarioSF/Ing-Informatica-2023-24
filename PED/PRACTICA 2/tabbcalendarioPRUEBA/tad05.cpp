@@ -1,7 +1,5 @@
 #include <iostream>
 #include "tabbcalendario.h"
-#include "tcalendario.h"
-#include "tvectorcalendario.h"
 using namespace std;
 
 int
@@ -15,12 +13,12 @@ main(void)
 TABBCalendario a;
 TVectorCalendario vec1, vec2, vec3;
 
-TCalendario c1(1,1,2011,(char*) "Fecha1");
-TCalendario c2(2,1,2011,(char*) "Fecha2");
-TCalendario c3(3,1,2011,(char*) "Fecha3");
-TCalendario c4(4,1,2011,(char*) "Fecha4");
-TCalendario c5(5,1,2011,(char*) "Fecha5");
-TCalendario c6(6,1,2011,(char*) "Fecha6");
+TCalendario c1(1,1,2011,"Fecha1");
+TCalendario c2(2,1,2011,"Fecha2");
+TCalendario c3(3,1,2011,"Fecha3");
+TCalendario c4(4,1,2011,"Fecha4");
+TCalendario c5(5,1,2011,"Fecha5");
+TCalendario c6(6,1,2011,"Fecha6");
 
 a.Insertar(c5);
 a.Insertar(c2);

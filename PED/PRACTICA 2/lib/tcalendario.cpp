@@ -1,3 +1,4 @@
+//74392984J Dario Simon Franco
 #include "tcalendario.h"
 
 using namespace std;
@@ -13,7 +14,7 @@ TCalendario::TCalendario(){
 }
 
 //	Constructor por defecto
-TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){
+TCalendario::TCalendario(int dia, int mes, int anyo,const char *mens){
 	if(fechaCorrecta(dia, mes, anyo)){
 		this->dia = dia;
 		this->mes = mes;
@@ -49,8 +50,9 @@ TCalendario::~TCalendario(){
 	this->anyo = 1900;
 	if(this->mensaje != NULL){
 		delete[] this->mensaje;
+		this->mensaje = NULL;
 	}
-	this->mensaje = NULL;
+	
 }
 
 //	Devuelve TRUE si tiene los valores por defecto, FALSE en caso contrario

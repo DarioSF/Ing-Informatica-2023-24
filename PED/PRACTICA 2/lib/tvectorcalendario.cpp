@@ -1,3 +1,4 @@
+//74392984J Dario Simon Franco
 #include "tvectorcalendario.h"
 #include "tcalendario.h"
 
@@ -25,7 +26,7 @@ TVectorCalendario::TVectorCalendario(int tamano){
 }
 
 //	Constructor de copia
-TVectorCalendario::TVectorCalendario(TVectorCalendario &vc){
+TVectorCalendario::TVectorCalendario(const TVectorCalendario &vc){
 	this->tamano = vc.tamano;
 	this->c = new TCalendario[this->tamano];
 	for(int i = 1; i <= this->tamano; i++){
@@ -41,7 +42,7 @@ TVectorCalendario::~TVectorCalendario(){
 }
 
 //	Devuelve el tamaño del vector
-int TVectorCalendario::Tamano(){
+int TVectorCalendario::Tamano() const{
 	return this->tamano;
 }
 
@@ -70,14 +71,14 @@ int TVectorCalendario::Ocupadas(){
 
 //	Muestra los mensajes posteriores a una fecha dada
 void TVectorCalendario::MostrarMensajes(int d, int m, int a){
-	int veces = -1;
+	int veces = 0;
 	//	Recorremos el vector para saber cuando dejar de poner la coma
-	for(int i = 0; i <= this->tamano; i++){
+	for(int i = 0; i < this->tamano; i++){
 		if(compararFechas(this->c[i], d, m, a)) veces++;
 	}
 	cout << "[";
 	//	Recorremos el vector
- 	for(int i = 1; i <= this->tamano; i++){
+ 	for(int i = 0; i < this->tamano; i++){
  		//	Si la fecha cumple la condicion lo mostramos
  		if(compararFechas(this->c[i], d, m, a)){
  			cout << this->c[i];
@@ -118,7 +119,7 @@ bool TVectorCalendario::Redimensionar(int tam){
 /*		OPERADORES SOBRECARGADOS	*/
 
 // Sobrecarga del operador: ASIGNACION
-TVectorCalendario& TVectorCalendario::operator=(TVectorCalendario &vc){
+TVectorCalendario& TVectorCalendario::operator=(const TVectorCalendario &vc){
 	//	Si es distinto realizamos la operacion
 	if(this != &vc){
 		//	Liberamos memoria
@@ -169,7 +170,7 @@ TCalendario TVectorCalendario::operator[](int i) const{
 /*		FUNCIONES AMIGAS		*/
 
 //	Sobrecarga del operador: SALIDA
-ostream &operator<<(ostream &os, TVectorCalendario &v){
+ostream &operator<<(ostream &os, const TVectorCalendario &v){
 	int veces = -1;
 	for(int i = 0; i <= v.Tamano(); i++) veces++;
 	os << "[";
