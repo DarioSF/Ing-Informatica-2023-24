@@ -32,7 +32,7 @@ class TCalendario{
 	/*	Constructor sobrecargado											*/
 		TCalendario(int, int, int,const char*);
 	/*	Constructor copia 													*/
-		TCalendario (TCalendario &);
+		TCalendario (const TCalendario &);
 	/*	Destructor 															*/
 		~TCalendario();
 	/*	Sobrecarga del operador asignación									*/

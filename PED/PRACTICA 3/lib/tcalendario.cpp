@@ -32,7 +32,7 @@ TCalendario::TCalendario(int dia, int mes, int anyo,const char *mens){
 	}
 }
 //	Constructor copia
-TCalendario::TCalendario(TCalendario &cal){ //posible test: pasar un null
+TCalendario::TCalendario(const TCalendario &cal){ //posible test: pasar un null
 	this->dia = cal.dia;
 	this->mes = cal.mes;
 	this->anyo = cal.anyo;

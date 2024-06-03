@@ -18,7 +18,7 @@ TNodoAVL & TNodoAVL::operator=(const TNodoAVL &nodo){
 	// Evitamos autoasignacion
     if(this != &nodo){
         // Liberar la memoria del nodo actual
-        this->~TNodoABB();
+        this->~TNodoAVL();
         // Copiar los datos del nodo
         this->item = nodo.item;
         this->iz = nodo.iz;
@@ -40,7 +40,7 @@ TAVLCalendario::TAVLCalendario() : raiz(NULL) {}
 // Constructor de copia de TAVLCalendario
 TAVLCalendario::TAVLCalendario(const TAVLCalendario &arbol){
     if(!arbol.EsVacio()){
-        this->raiz = new TNodoABB();
+        this->raiz = new TNodoAVL();
         this->raiz->item = arbol.raiz->item;
         this->raiz->iz = arbol.raiz->iz;
         this->raiz->de = arbol.raiz->de;
@@ -49,7 +49,7 @@ TAVLCalendario::TAVLCalendario(const TAVLCalendario &arbol){
 }
 // Destructor de TAVLCalendario
 TAVLCalendario::~TAVLCalendario() {
-    VaciarNodo(raiz);
+    //VaciarNodo(raiz);
 }
 
 // Sobrecarga del operador de asignación de TAVLCalendario
@@ -57,10 +57,10 @@ TAVLCalendario & TAVLCalendario::operator=(const TAVLCalendario &arbol){
     // Evitamos autoasignacion
     if(this != &arbol){
     	// Eliminamos memoria
-        this->~TABBCalendario();
+        this->~TAVLCalendario();
         // Realizamos la asignacion de datos
         if(!arbol.EsVacio()){
-            this->raiz = new TNodoABB();
+            this->raiz = new TNodoAVL();
             this->raiz->item = arbol.raiz->item;
             this->raiz->iz = arbol.raiz->iz;
             this->raiz->de = arbol.raiz->de;
