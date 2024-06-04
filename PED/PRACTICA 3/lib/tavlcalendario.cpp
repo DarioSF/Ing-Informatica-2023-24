@@ -322,8 +322,8 @@ void TAVLCalendario::RotDerecha(TNodoAVL *&nodo) {
     aux->de.raiz = nodo;
 
     // Actualizamos factores de equilibrio
-    nodo->fe = (nodo->de.raiz ? nodo->de.Altura() : 0) - (nodo->iz.raiz ? nodo->iz.Altura() : 0);
-    aux->fe = (aux->de.raiz ? aux->de.Altura() : 0) - (aux->iz.raiz ? aux->iz.Altura() : 0);
+    nodo->fe = nodo->de.Altura() - nodo->iz.Altura();
+    aux->fe = aux->de.Altura() - aux->iz.Altura();
 
     nodo = aux;
 }
@@ -335,8 +335,8 @@ void TAVLCalendario::RotIzquierda(TNodoAVL *&nodo) {
     aux->iz.raiz = nodo;
 
     // Actualizamos factores de equilibrio
-    nodo->fe = (nodo->de.raiz ? nodo->de.Altura() : 0) - (nodo->iz.raiz ? nodo->iz.Altura() : 0);
-    aux->fe = (aux->de.raiz ? aux->de.Altura() : 0) - (aux->iz.raiz ? aux->iz.Altura() : 0);
+    nodo->fe = nodo->de.Altura() - nodo->iz.Altura();
+    aux->fe = aux->de.Altura() - aux->iz.Altura();
 
     nodo = aux;
 }
@@ -349,7 +349,7 @@ void TAVLCalendario::Rot2Derecha(TNodoAVL *&nodo) {
 
 // Realiza una rotación doble a la izquierda
 void TAVLCalendario::Rot2Izquierda(TNodoAVL *&nodo) {
-    RotDerecha(nodo->iz.raiz);
+    RotDerecha(nodo->de.raiz);
     RotIzquierda(nodo);
 }
 
