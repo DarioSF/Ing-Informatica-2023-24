@@ -23,7 +23,7 @@ class TCalendario{
 		bool fechaCorrecta(int, int, int);
 		bool esBisiesto(int);
 		int numDiasMes(int, int);
-		void arreglarFecha(TCalendario &, int);
+		//void arreglarFecha(TCalendario &, int);
 		bool compararMensaje(char*, char*);
 	public:
 	/*							FORMA CANONICA								*/

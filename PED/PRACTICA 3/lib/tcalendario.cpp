@@ -32,15 +32,16 @@ TCalendario::TCalendario(int dia, int mes, int anyo,const char *mens){
 	}
 }
 //	Constructor copia
-TCalendario::TCalendario(const TCalendario &cal){ //posible test: pasar un null
-	this->dia = cal.dia;
-	this->mes = cal.mes;
-	this->anyo = cal.anyo;
-	if(cal.mensaje != NULL){
-		this->mensaje = new char[strlen(cal.mensaje)+1];
-		strcpy(this->mensaje, cal.mensaje);
-	}
-	else mensaje = NULL;
+TCalendario::TCalendario(const TCalendario &cal) {
+    dia = cal.dia;
+    mes = cal.mes;
+    anyo = cal.anyo;
+    if (cal.mensaje != NULL) {
+        mensaje = new char[strlen(cal.mensaje) + 1];
+        strcpy(mensaje, cal.mensaje);
+    } else {
+        mensaje = NULL;
+    }
 }
 
 //	Destructor

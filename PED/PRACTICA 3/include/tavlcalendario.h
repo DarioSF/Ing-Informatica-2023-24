@@ -15,13 +15,14 @@ class TAVLCalendario {
         void InordenAux(TVectorCalendario &, int &) const;  // AUXILIAR: devuelve el recorrido en INORDEN
         void PreordenAux(TVectorCalendario &, int &) const;  // AUXILIAR: devuelve el recorrido en PREORDEN
         void PostordenAux(TVectorCalendario &, int &) const;  // AUXILIAR: devuelve el recorrido en POSTORDEN
+        void RotDerecha(TNodoAVL *&);  // Realiza una rotación simple a la derecha
+        void RotIzquierda(TNodoAVL *&);  // Realiza una rotación simple a la izquierda
+        void Rot2Derecha(TNodoAVL *&);  // Realiza una rotación doble a la derecha
+        void Rot2Izquierda(TNodoAVL *&);  // Realiza una rotación doble a la izquierda
+        bool InsertarAux(const TCalendario &, TNodoAVL *&); // AUXILIAR: Realiza la insercion y balancea
+        bool BorrarAux(TCalendario &, TNodoAVL *&); // AUXILIAR: Realiza el borrado
+        void Balancear(TNodoAVL *&); // AUXILIAR: Realiza el balanceo
 
-        void Copiar(const TAVLCalendario &);  // Método para copiar un árbol AVL
-        TNodoAVL* BuscarPunteroNodo(TCalendario, TNodoAVL *);  // Método para buscar un nodo por su valor
-        void RotacionSimpleDerecha(TNodoAVL *&);  // Realiza una rotación simple a la derecha
-        void RotacionSimpleIzquierda(TNodoAVL *&);  // Realiza una rotación simple a la izquierda
-        void RotacionDobleDerecha(TNodoAVL *&);  // Realiza una rotación doble a la derecha
-        void RotacionDobleIzquierda(TNodoAVL *&);  // Realiza una rotación doble a la izquierda
 
     public:
         TAVLCalendario();  // Constructor por defecto

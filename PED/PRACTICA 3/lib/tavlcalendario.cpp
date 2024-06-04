@@ -49,7 +49,10 @@ TAVLCalendario::TAVLCalendario(const TAVLCalendario &arbol){
 }
 // Destructor de TAVLCalendario
 TAVLCalendario::~TAVLCalendario() {
-    //VaciarNodo(raiz);
+    if(raiz != NULL){
+        delete raiz;
+        raiz = NULL;
+    }
 }
 
 // Sobrecarga del operador de asignación de TAVLCalendario
@@ -71,7 +74,7 @@ TAVLCalendario & TAVLCalendario::operator=(const TAVLCalendario &arbol){
     return *this;
 }
 // Sobrecarga del operador igualdad de TAVLCalendario
-bool TAVLCalendario::operator==(const TAVLCalendario &arbol)const{
+bool TAVLCalendario::operator==(const TAVLCalendario &arbol) const{
 	// Check para ver si la raiz es la misma
 	if(this->Inorden() != arbol.Inorden()) return false;
 	// Si llega aqui son iguales
@@ -79,7 +82,7 @@ bool TAVLCalendario::operator==(const TAVLCalendario &arbol)const{
 }
 
 // Sobrecarga del operador desigualdad de TAVLCalendario
-bool TAVLCalendario::operator!=(const TAVLCalendario &tavl) const {
+bool TAVLCalendario::operator!=(const TAVLCalendario &tavl) const{
     // Implementación pendiente
     return !(*this == tavl);
 }
@@ -92,10 +95,35 @@ bool TAVLCalendario::EsVacio() const{
 	return false;
 }
 // Inserta el elemento en el árbol
-bool TAVLCalendario::Insertar(const TCalendario &cal) {
-    // Implementación pendiente
-    return false;
+bool TAVLCalendario::Insertar(const TCalendario &c){
+    return InsertarAux(c, raiz);
 }
+
+bool TAVLCalendario::InsertarAux(const TCalendario &c, TNodoAVL *&nodo) {
+    bool res = true;
+
+    if (nodo == nullptr) {
+        nodo = new TNodoAVL();
+        if (!nodo) return false;
+        nodo->item = c;
+        nodo->fe = 0;
+    } else if (nodo->item == c) {
+        res = false;
+    } else if (nodo->item > c) {
+        res = InsertarAux(c, nodo->iz.raiz);
+        if (res) nodo->fe--;
+    } else {
+        res = InsertarAux(c, nodo->de.raiz);
+        if (res) nodo->fe++;
+    }
+
+    if (nodo != nullptr) {
+        Balancear(nodo);
+    }
+
+    return res;
+}
+
 
 // Devuelve TRUE si el elemento está en el árbol, false en caso contrario
 bool TAVLCalendario::Buscar(const TCalendario &cal) const{
@@ -185,8 +213,65 @@ TVectorCalendario TAVLCalendario::Postorden() const{
 
 // Borra un TCalendario del árbol AVL
 bool TAVLCalendario::Borrar(TCalendario &cal) {
-    // Implementación pendiente
-    return false;
+    return BorrarAux(cal, raiz);
+}
+
+bool TAVLCalendario::BorrarAux(TCalendario &cal, TNodoAVL *&nodo) {
+    if (nodo == NULL) {
+        return false;  // El elemento no se encuentra en el árbol
+    }
+
+    bool res;
+    if (cal < nodo->item) {
+        res = BorrarAux(cal, nodo->iz.raiz);
+    } else if (cal > nodo->item) {
+        res = BorrarAux(cal, nodo->de.raiz);
+    } else {
+        // Nodo encontrado
+        res = true;
+        if (nodo->iz.EsVacio() && nodo->de.EsVacio()) {
+            // Caso 1: Nodo a borrar es una hoja
+            delete nodo;
+            nodo = NULL;
+        } else if (nodo->iz.EsVacio() || nodo->de.EsVacio()) {
+            // Caso 2: Nodo a borrar tiene un solo hijo
+            TNodoAVL *hijo = (nodo->iz.EsVacio()) ? nodo->de.raiz : nodo->iz.raiz;
+            TNodoAVL *temp = nodo;
+            nodo = hijo;
+            delete temp;
+        } else {
+            // Caso 3: Nodo a borrar tiene dos hijos
+            TNodoAVL *sustituto = nodo->de.raiz;
+            while (sustituto->iz.raiz != NULL) {
+                sustituto = sustituto->iz.raiz;
+            }
+            nodo->item = sustituto->item;
+            BorrarAux(sustituto->item, nodo->de.raiz);
+        }
+    }
+
+    if (nodo != NULL) {
+        Balancear(nodo);
+    }
+
+    return res;
+}
+
+void TAVLCalendario::Balancear(TNodoAVL *&nodo) {
+    nodo->fe = (nodo->de.raiz ? nodo->de.Altura() : 0) - (nodo->iz.raiz ? nodo->iz.Altura() : 0);
+    if (nodo->fe == -2) {
+        if (nodo->iz.raiz->fe <= 0) {
+            RotDerecha(nodo);
+        } else {
+            Rot2Derecha(nodo);
+        }
+    } else if (nodo->fe == 2) {
+        if (nodo->de.raiz->fe >= 0) {
+            RotIzquierda(nodo);
+        } else {
+            Rot2Izquierda(nodo);
+        }
+    }
 }
 
 // Devuelve el elemento TCalendario raíz del árbol AVL
@@ -230,39 +315,46 @@ void TAVLCalendario::PostordenAux(TVectorCalendario &vec, int &pos) const {
     }
 }
 
-// Método para copiar un árbol AVL
-void TAVLCalendario::Copiar(const TAVLCalendario &tavl) {
-    // Implementación pendiente
-}
-
-// Método para buscar un nodo por su valor
-TNodoAVL* TAVLCalendario::BuscarPunteroNodo(TCalendario cal, TNodoAVL *tnodoraiz) {
-    // Implementación pendiente
-    return NULL;
-}
-
 // Realiza una rotación simple a la derecha
-void TAVLCalendario::RotacionSimpleDerecha(TNodoAVL *&nodo) {
-    // Implementación pendiente
+void TAVLCalendario::RotDerecha(TNodoAVL *&nodo) {
+    TNodoAVL *aux = nodo->iz.raiz;
+    nodo->iz.raiz = aux->de.raiz;
+    aux->de.raiz = nodo;
+
+    // Actualizamos factores de equilibrio
+    nodo->fe = (nodo->de.raiz ? nodo->de.Altura() : 0) - (nodo->iz.raiz ? nodo->iz.Altura() : 0);
+    aux->fe = (aux->de.raiz ? aux->de.Altura() : 0) - (aux->iz.raiz ? aux->iz.Altura() : 0);
+
+    nodo = aux;
 }
 
 // Realiza una rotación simple a la izquierda
-void TAVLCalendario::RotacionSimpleIzquierda(TNodoAVL *&nodo) {
-    // Implementación pendiente
+void TAVLCalendario::RotIzquierda(TNodoAVL *&nodo) {
+    TNodoAVL *aux = nodo->de.raiz;
+    nodo->de.raiz = aux->iz.raiz;
+    aux->iz.raiz = nodo;
+
+    // Actualizamos factores de equilibrio
+    nodo->fe = (nodo->de.raiz ? nodo->de.Altura() : 0) - (nodo->iz.raiz ? nodo->iz.Altura() : 0);
+    aux->fe = (aux->de.raiz ? aux->de.Altura() : 0) - (aux->iz.raiz ? aux->iz.Altura() : 0);
+
+    nodo = aux;
 }
 
 // Realiza una rotación doble a la derecha
-void TAVLCalendario::RotacionDobleDerecha(TNodoAVL *&nodo) {
-    // Implementación pendiente
+void TAVLCalendario::Rot2Derecha(TNodoAVL *&nodo) {
+    RotIzquierda(nodo->iz.raiz);
+    RotDerecha(nodo);
 }
 
 // Realiza una rotación doble a la izquierda
-void TAVLCalendario::RotacionDobleIzquierda(TNodoAVL *&nodo) {
-    // Implementación pendiente
+void TAVLCalendario::Rot2Izquierda(TNodoAVL *&nodo) {
+    RotDerecha(nodo->iz.raiz);
+    RotIzquierda(nodo);
 }
 
 // Sobrecarga del operador salida
 ostream & operator<<(ostream &os, const TAVLCalendario &tavl) {
-    // Implementación pendiente
+    os << tavl.Inorden();
     return os;
 }
