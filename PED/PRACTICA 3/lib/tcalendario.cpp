@@ -46,13 +46,11 @@ TCalendario::TCalendario(const TCalendario &cal) {
 
 //	Destructor
 TCalendario::~TCalendario(){
-	this->dia = 1;
-	this->mes = 1;
-	this->anyo = 1900;
-	if(this->mensaje != NULL){
-		delete[] this->mensaje;
-		this->mensaje = NULL;
-	}
+	delete[] mensaje;
+	mensaje = NULL;
+	dia = 1;
+	mes = 1;
+	anyo = 1900;
 	
 }
 
